@@ -1,3 +1,4 @@
+import { Link, Links } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 
 const products = [
@@ -122,7 +123,10 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <Link to={"/product/:id"}>
+                   <ProductCard key={product.id} product={product} />
+              </Link>
+           
             ))}
           </div>
         </div>

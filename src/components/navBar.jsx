@@ -1,4 +1,5 @@
 import { ShoppingCart, User, Search, Menu } from "lucide-react";
+import { Link, Links } from "react-router-dom";
 
 export default function Navbar() {
   return (
@@ -9,11 +10,14 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <div className="flex items-center gap-2 cursor-pointer select-none">
+          <Link to={"/"}>
+            <div className="flex items-center gap-2 cursor-pointer select-none">
             <span className="text-2xl font-extrabold tracking-tight text-gray-900">
               ShopEase
             </span>
           </div>
+          </Link>
+          
 
           {/* Search - Desktop */}
           <div className="hidden md:flex flex-1 justify-center px-8">
@@ -33,7 +37,8 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
 
             {/* Cart */}
-            <div className="relative group cursor-pointer">
+            <Link to={"/cart"}>
+               <div className="relative group cursor-pointer">
               <div className="flex items-center justify-center w-10 h-10 rounded-full
                 hover:bg-gray-100 transition">
                 <ShoppingCart className="h-6 w-6 text-gray-700 group-hover:text-gray-900 transition" />
@@ -45,17 +50,23 @@ export default function Navbar() {
                 2
               </span>
             </div>
+            
+            </Link>
+           
 
             {/* User */}
-            <div className="hidden md:flex items-center gap-2 cursor-pointer group">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full
-                hover:bg-gray-100 transition">
-                <User className="h-6 w-6 text-gray-700 group-hover:text-gray-900 transition" />
-              </div>
-              <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition">
-                Login
-              </span>
-            </div>
+            <Link to={"/login"}>
+                <div className="hidden md:flex items-center gap-2 cursor-pointer group">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full
+                    hover:bg-gray-100 transition">
+                    <User className="h-6 w-6 text-gray-700 group-hover:text-gray-900 transition" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition">
+                    Login
+                  </span>
+                </div>
+            </Link>
+            
 
             {/* Mobile Menu */}
             <button className="md:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition">
