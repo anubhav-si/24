@@ -7,8 +7,9 @@ export default function ProductCard({ product }) {
       {/* Image */}
       <div className="relative">
         <img
-          src={product.image}
-          alt={product.title}
+          src={product.images[0].url}
+          alt={product.name
+}
           className="h-56 w-full object-cover group-hover:scale-105 transition"
         />
 
@@ -21,15 +22,15 @@ export default function ProductCard({ product }) {
       {/* Content */}
       <div className="p-4 space-y-2">
         <h3 className="text-sm font-semibold text-gray-800 line-clamp-1">
-          {product.title}
+          {product.name}
         </h3>
 
         {/* Rating */}
         <div className="flex items-center gap-1 text-yellow-500">
-          {[...Array(5)].map((_, i) => (
+          {[...Array(product.rating)].map((_, i) => (
             <Star key={i} size={14} fill="currentColor" />
           ))}
-          <span className="text-xs text-gray-500 ml-1">(4.8)</span>
+          <span className="text-xs text-gray-500 ml-1">{(product.rating)}</span>
         </div>
 
         {/* Price */}
@@ -38,7 +39,7 @@ export default function ProductCard({ product }) {
             ₹{product.price}
           </span>
           <span className="text-sm line-through text-gray-400">
-            ₹{product.oldPrice}
+            ₹{product.oldPrice || 6000}
           </span>
         </div>
 
