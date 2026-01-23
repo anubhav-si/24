@@ -8,7 +8,6 @@ import Cart from "../src/pages/Cart";
 import Checkout from "../src/pages/Checkout";
 import OrderSuccess from "../src/pages/OrderSuccess";
 import UserOrders from "../src/pages/UserOrders";
-
 import Login from "../src/auth/Login";
 import Register from "../src/auth/Register";
 
