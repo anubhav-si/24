@@ -1,20 +1,25 @@
 import { Star, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function ProductDetails() {
   const [qty, setQty] = useState(1);
+  const {id} = useParams();
 
-  const product = {
-    title: "Premium Headphones",
-    price: 2999,
-    oldPrice: 3999,
-    image:
-      "https://images.unsplash.com/photo-1585386959984-a4155228f9f4",
-    description:
-      "Experience immersive sound with premium build quality and long-lasting comfort.",
-    rating: 4.5,
-    reviews: 128,
-  };
+  const products = useSelector((state)=>state.product.productList);
+  const product = products.find((items)=>items._id === id );
+  console.log(`this is from product details page ${id}`);
+  console.log(product);
+
+  if (!product) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center text-gray-600">
+        Loading product details...
+      </div>
+    );
+  }
+  
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -22,8 +27,8 @@ export default function ProductDetails() {
       {/* Image */}
       <div className="bg-gray-100 rounded-xl p-6 flex items-center justify-center">
         <img
-          src={product.image}
-          alt={product.title}
+          src={product.images[0].url}
+          alt={product.name}
           className="rounded-lg max-h-[400px] object-contain"
         />
       </div>
@@ -31,30 +36,30 @@ export default function ProductDetails() {
       {/* Details */}
       <div>
         <h1 className="text-3xl font-semibold text-gray-900">
-          {product.title}
+          {product.name}
         </h1>
 
         {/* Rating */}
         <div className="flex items-center gap-2 mt-2">
           <Star className="text-yellow-500 w-5 h-5 fill-yellow-500" />
           <span className="text-gray-700 font-medium">
-            {product.rating}
+            {product.rating || 4}
           </span>
           <span className="text-gray-400 text-sm">
-            ({product.reviews} reviews)
+            ({product.reviews || 50} reviews)
           </span>
         </div>
 
         {/* Price */}
         <div className="flex items-center gap-4 mt-4">
           <span className="text-2xl font-bold text-gray-900">
-            ₹{product.price}
+            ₹{product.price }
           </span>
           <span className="text-lg line-through text-gray-400">
-            ₹{product.oldPrice}
+            ₹{product.oldPrice || 6000}
           </span>
           <span className="text-green-600 font-medium">
-            Save ₹{product.oldPrice - product.price}
+            Save ₹{product.oldPrice - product.price || 2000}
           </span>
         </div>
 

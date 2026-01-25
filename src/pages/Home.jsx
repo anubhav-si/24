@@ -2,18 +2,22 @@ import { Link, Links } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addProductList } from "../reduxstore/productSlice";
 
 
 
 
 export default function Home() {
   const [products,setproducts] =useState([]);
+  const dispatch = useDispatch();
   const getData = async() =>{
     try {
       const res = await axios.get("http://localhost:3001/web/getAllProduct");
-      console.log(res.data.products);
-
-      setproducts(res.data.products);
+      
+      const allProductList = res.data.products;
+      setproducts(allProductList);
+      dispatch(addProductList(allProductList));
       
     } catch (err) {
       console.log(err);
@@ -55,8 +59,9 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {products.map((product) => (
-              <Link to={"/product/:id"}>
-                   <ProductCard key={products._id} product={product} />
+              
+              <Link to={`/product/${product._id}`}>
+                   <ProductCard key={product._id} product={product} />
               </Link>
            
             ))}

@@ -1,4 +1,5 @@
 import { Mail, Lock, User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   return (
@@ -75,9 +76,11 @@ export default function Register() {
         {/* Footer */}
         <p className="text-sm text-gray-600 text-center mt-6">
           Already have an account?{" "}
-          <span className="font-medium text-black cursor-pointer">
-            Sign in
-          </span>
+         <Link to={"/login"}>
+            <span className="font-medium text-black cursor-pointer">
+                Sign in
+            </span>
+         </Link>
         </p>
       </div>
     </div>
