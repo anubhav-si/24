@@ -1,16 +1,23 @@
 import { Star, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addProductToCart } from "../reduxstore/cartSlice";
 
 export default function ProductDetails() {
   const [qty, setQty] = useState(1);
   const {id} = useParams();
+  const dispatch = useDispatch();
 
   const products = useSelector((state)=>state.product.productList);
   const product = products.find((items)=>items._id === id );
-  console.log(`this is from product details page ${id}`);
-  console.log(product);
+  // console.log(`this is from product details page ${id}`);
+  // console.log(product);
+
+  const handleAddToCart =(p)=>{
+    dispatch(addProductToCart(p))
+  }
+
 
   if (!product) {
     return (
@@ -89,7 +96,11 @@ export default function ProductDetails() {
         </div>
 
         {/* CTA */}
-        <button className="mt-8 w-full md:w-auto flex items-center justify-center gap-2 bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition">
+        <button 
+        className="mt-8 w-full md:w-auto flex items-center justify-center gap-2 bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition"
+        onClick={()=>handleAddToCart(product)}
+        >
+        
           <ShoppingCart />
           Add to Cart
         </button>

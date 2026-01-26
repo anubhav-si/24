@@ -1,50 +1,32 @@
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import {removeProductFromCart} from "../reduxstore/cartSlice";
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      title: "Premium Headphones",
-      brand: "ShopEase Audio",
-      price: 2999,
-      image:
-        "https://images.unsplash.com/photo-1585386959984-a4155228f9f4",
-      qty: 1,
-      stock: "In Stock",
-    },
-    {
-      id: 2,
-      title: "Smart Watch Series X",
-      brand: "ShopEase Wear",
-      price: 4999,
-      image:
-        "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b",
-      qty: 2,
-      stock: "Only 2 left",
-    },
-  ]);
+  const dispatch = useDispatch();
+ 
+  const cartItems = useSelector((state)=>state.cart.cartitem);
+ 
+  
+    
 
-  const updateQty = (id, delta) => {
-    setCartItems(items =>
-      items.map(item =>
-        item.id === id
-          ? { ...item, qty: Math.max(1, item.qty + delta) }
-          : item
-      )
-    );
+  const removeItem = (id) => {
+  
+    dispatch(removeProductFromCart(id));
+    console.log(dispatch);
+    
   };
-
-  const removeItem = id => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
-
-  const subtotal = cartItems.reduce(
+  
+    
+    const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.qty,
     0
   );
 
+  
+  
   return (
     <div className="bg-gray-100 min-h-screen py-6 sm:py-10">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -62,7 +44,7 @@ export default function Cart() {
 
           {cartItems.map(item => (
             <div
-              key={item.id}
+              key={item._id}
               className="px-4 sm:px-6 py-5 border-b last:border-b-0"
             >
               {/* ITEM CONTAINER */}
@@ -70,22 +52,22 @@ export default function Cart() {
 
                 {/* Image */}
                 <img
-                  src={item.image}
-                  alt={item.title}
+                  src={item.images[0].url}
+                  alt={item.name}
                   className="w-24 h-24 sm:w-28 sm:h-28 object-contain bg-gray-50 rounded-lg mx-auto sm:mx-0"
                 />
 
                 {/* Details */}
                 <div className="flex-1">
                   <h2 className="font-medium text-gray-900 text-base sm:text-lg">
-                    {item.title}
+                    {item.name}
                   </h2>
                   <p className="text-sm text-gray-500">
-                    Brand: {item.brand}
+                    Brand: {item.brand ||  "premium" }
                   </p>
 
                   <p className="text-sm text-green-600 mt-1">
-                    {item.stock}
+                    {item.stock || 25}
                   </p>
 
                   {/* Actions */}
@@ -109,7 +91,7 @@ export default function Cart() {
 
                     {/* Remove */}
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item._id)}
                       className="flex items-center gap-1 text-sm text-red-500 hover:text-red-600"
                     >
                       <Trash2 size={16} />
@@ -142,7 +124,7 @@ export default function Cart() {
             <div className="mt-4 space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Subtotal</span>
-                <span>₹{subtotal}</span>
+                <span>₹{subtotal || 5000}</span>
               </div>
 
               <div className="flex justify-between">
@@ -158,7 +140,7 @@ export default function Cart() {
 
             <div className="border-t mt-4 pt-4 flex justify-between font-semibold text-lg">
               <span>Total</span>
-              <span>₹{subtotal}</span>
+              <span>₹{subtotal || 5000}</span>
             </div>
 
             <Link to="/checkout">
