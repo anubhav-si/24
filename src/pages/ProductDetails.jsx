@@ -1,23 +1,32 @@
 import { Star, ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addProductToCart } from "../reduxstore/cartSlice";
 
 export default function ProductDetails() {
   const [qty, setQty] = useState(1);
-  const {id} = useParams();
+  const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const products = useSelector((state)=>state.product.productList);
-  const product = products.find((items)=>items._id === id );
-  // console.log(`this is from product details page ${id}`);
-  // console.log(product);
+  const products = useSelector((state) => state.product.productList);
+  const cartItems = useSelector((state) => state.cart.cartitem);
 
-  const handleAddToCart =(p)=>{
-    dispatch(addProductToCart(p))
-  }
+  const product = products.find((item) => item._id === id);
 
+  // ✅ check if product already in cart
+  const isInCart = cartItems.some(
+    (item) => item._id === product?._id
+  );
+
+  const handleCartClick = () => {
+    if (isInCart) {
+      navigate("/cart");
+    } else {
+      dispatch(addProductToCart(product));
+    }
+  };
 
   if (!product) {
     return (
@@ -26,7 +35,6 @@ export default function ProductDetails() {
       </div>
     );
   }
-  
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -60,13 +68,13 @@ export default function ProductDetails() {
         {/* Price */}
         <div className="flex items-center gap-4 mt-4">
           <span className="text-2xl font-bold text-gray-900">
-            ₹{product.price }
+            ₹{product.price}
           </span>
           <span className="text-lg line-through text-gray-400">
             ₹{product.oldPrice || 6000}
           </span>
           <span className="text-green-600 font-medium">
-            Save ₹{product.oldPrice - product.price || 2000}
+            Save ₹{(product.oldPrice || 6000) - product.price}
           </span>
         </div>
 
@@ -96,13 +104,13 @@ export default function ProductDetails() {
         </div>
 
         {/* CTA */}
-        <button 
-        className="mt-8 w-full md:w-auto flex items-center justify-center gap-2 bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition"
-        onClick={()=>handleAddToCart(product)}
+        <button
+          onClick={handleCartClick}
+          className="mt-8 w-full md:w-auto flex items-center justify-center gap-2 
+                     bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition"
         >
-        
           <ShoppingCart />
-          Add to Cart
+          {isInCart ? "Go to Cart" : "Add to Cart"}
         </button>
       </div>
     </div>

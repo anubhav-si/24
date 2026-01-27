@@ -59,11 +59,9 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {products.map((product) => (
-              
-              <Link to={`/product/${product._id}`}>
+            
                    <ProductCard key={product._id} product={product} />
-              </Link>
-           
+              
             ))}
           </div>
         </div>

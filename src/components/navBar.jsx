@@ -1,7 +1,9 @@
 import { ShoppingCart, User, Search, Menu } from "lucide-react";
+import { useSelector } from "react-redux";
 import { Link, Links } from "react-router-dom";
 
 export default function Navbar() {
+  const cartItemsCount = useSelector((state)=>state.cart.cartitem);
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -45,9 +47,9 @@ export default function Navbar() {
               </div>
 
               <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px]
-                rounded-full bg-gray-900 text-white text-[10px]
+                rounded-full bg-gray-900 text-white text-[15px]
                 flex items-center justify-center font-medium">
-                2
+                {cartItemsCount.length}
               </span>
             </div>
             

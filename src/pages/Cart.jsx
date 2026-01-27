@@ -15,13 +15,12 @@ export default function Cart() {
   const removeItem = (id) => {
   
     dispatch(removeProductFromCart(id));
-    console.log(dispatch);
     
   };
   
     
     const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.qty,
+    (sum, item) => sum + item.price * item.quantity,
     0
   );
 
@@ -80,7 +79,7 @@ export default function Cart() {
                       >
                         −
                       </button>
-                      <span className="px-4">{item.qty}</span>
+                      <span className="px-4">{item.qty||5}</span>
                       <button
                         onClick={() => updateQty(item.id, 1)}
                         className="px-3 py-1 text-lg hover:bg-gray-100"
@@ -103,7 +102,7 @@ export default function Cart() {
                 {/* Price */}
                 <div className="sm:text-right flex sm:block justify-between items-center mt-2 sm:mt-0">
                   <p className="text-lg font-semibold text-gray-900">
-                    ₹{item.price * item.qty}
+                    ₹{item.price * (item.qty || 1)}
                   </p>
                   <p className="text-sm text-gray-500">
                     ₹{item.price} each

@@ -1,36 +1,62 @@
 import { ShoppingCart, Heart, Star } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { addProductToCart } from "../reduxstore/cartSlice";
 
 export default function ProductCard({ product }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const cartitems = useSelector((state) => state.cart.cartitem);
+  const isInCart = cartitems.some(
+    (item) => item._id === product._id
+  );
+
+  const handleClick = () => {
+    if (isInCart) {
+      navigate("/cart");
+    } else {
+      dispatch(addProductToCart(product));
+    }
+  };
+
   return (
     <div className="group bg-white rounded-xl border shadow-sm hover:shadow-lg transition overflow-hidden">
 
-      {/* Image */}
-      <div className="relative">
-        <img
-          src={product.images[0].url}
-          alt={product.name
-}
-          className="h-56 w-full object-cover group-hover:scale-105 transition"
-        />
+      {/* Image + Wishlist */}
+      <Link to={`/product/${product._id}`}>
+        <div className="relative">
+          <img
+            src={product.images[0].url}
+            alt={product.name}
+            className="h-56 w-full object-cover group-hover:scale-105 transition"
+          />
 
-        {/* Wishlist */}
-        <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100">
-          <Heart size={18} />
-        </button>
-      </div>
+          <button
+            className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100"
+            onClick={(e) => e.preventDefault()}
+          >
+            <Heart size={18} />
+          </button>
+        </div>
+      </Link>
 
       {/* Content */}
       <div className="p-4 space-y-2">
-        <h3 className="text-sm font-semibold text-gray-800 line-clamp-1">
-          {product.name}
-        </h3>
+        <Link to={`/product/${product._id}`}>
+          <h3 className="text-sm font-semibold text-gray-800 line-clamp-1 hover:underline">
+            {product.name}
+          </h3>
+        </Link>
 
         {/* Rating */}
         <div className="flex items-center gap-1 text-yellow-500">
           {[...Array(product.rating)].map((_, i) => (
             <Star key={i} size={14} fill="currentColor" />
           ))}
-          <span className="text-xs text-gray-500 ml-1">{(product.rating)}</span>
+          <span className="text-xs text-gray-500 ml-1">
+            {product.rating}
+          </span>
         </div>
 
         {/* Price */}
@@ -44,9 +70,12 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* CTA */}
-        <button className="mt-3 w-full flex items-center justify-center gap-2 bg-black text-white py-2 rounded-lg hover:bg-gray-900 transition">
+        <button
+          onClick={handleClick}
+          className="mt-3 w-full flex items-center justify-center gap-2 bg-black text-white py-2 rounded-lg hover:bg-gray-900 transition"
+        >
           <ShoppingCart size={18} />
-          Add to Cart
+          {isInCart ? "Go to Cart" : "Add to Cart"}
         </button>
       </div>
     </div>
