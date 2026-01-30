@@ -39,9 +39,11 @@ export default function Home() {
             <p className="text-gray-600 mb-6">
               Shop the best quality items at unbeatable prices.
             </p>
-            <button className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900">
-              Shop Now
-            </button>
+            <Link to={"/shop"}>
+              <button className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900">
+                Shop Now
+              </button>
+            </Link>
           </div>
 
           <img
