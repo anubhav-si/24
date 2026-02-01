@@ -1,8 +1,18 @@
 import { Mail, Lock, User } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Register() {
+  const [data,setData] = useState({
+    userName:null,
+    email:null,
+    password:null,
+    confirmPassword:null,
+
+  });
   return (
+    
+    
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border p-8">
 
@@ -24,6 +34,8 @@ export default function Register() {
               <User className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
               <input
                 type="text"
+                name="userName"
+                value={data.userName}
                 className="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
                 placeholder="John Doe"
               />
@@ -36,6 +48,8 @@ export default function Register() {
               <Mail className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
               <input
                 type="email"
+                name="email"
+                value={data.email}
                 className="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
                 placeholder="you@example.com"
               />
@@ -48,6 +62,8 @@ export default function Register() {
               <Lock className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
               <input
                 type="password"
+                name="password"
+                value={data.password}
                 className="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
                 placeholder="••••••••"
               />
@@ -62,6 +78,8 @@ export default function Register() {
               <Lock className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
               <input
                 type="password"
+                name="confirmPassword"
+                value={data.confirmPassword}
                 className="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
                 placeholder="••••••••"
               />

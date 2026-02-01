@@ -1,14 +1,16 @@
+import { useSelector } from "react-redux";
 import ProductCard from "../components/ProductCard";
 
-const products = Array.from({ length: 8 }, (_, i) => ({
-  id: i + 1,
-  title: `Product ${i + 1}`,
-  price: 1999 + i * 500,
-  oldPrice: 2999 + i * 500,
-  image: "https://images.unsplash.com/photo-1585386959984-a4155228f9f4",
-}));
+// const products = Array.from({ length: 8 }, (_, i) => ({
+//   id: i + 1,
+//   title: `Product ${i + 1}`,
+//   price: 1999 + i * 500,
+//   oldPrice: 2999 + i * 500,
+//   image: "https://images.unsplash.com/photo-1585386959984-a4155228f9f4",
+// }));
 
 export default function Shop() {
+  const products = useSelector((store)=>store.product.productList);
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
 
