@@ -1,15 +1,48 @@
+import { Axios } from "axios";
 import { Mail, Lock, User } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Register() {
   const [data,setData] = useState({
-    userName:null,
-    email:null,
-    password:null,
-    confirmPassword:null,
+    userName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
 
   });
+  const [error,seterror] = useState();
+  const [loading,SetLoading] = useState(false);
+  const handleChange = (e) =>{
+      setData({
+        ...data,
+        [e.target.name]:e.target.value,
+      });
+    };
+  const handleUserSignup = async (e) =>{
+    e.preventDefault();
+    seterror("");
+    
+   const {userName,email,password,confirmPassword} = data;
+      
+    if (!userName || !email || !password || !confirmPassword) {
+          return seterror("please provide all information");      
+    }
+    if(password != confirmPassword){
+      return seterror("Passwords do not match");
+    }
+    try { 
+      SetLoading(true);
+      const response = await Axios.post 
+
+
+      
+    } catch (error) {
+      seterror(error.message);
+    }finally{
+      SetLoading(false);
+    }
+  }
   return (
     
     
@@ -36,6 +69,7 @@ export default function Register() {
                 type="text"
                 name="userName"
                 value={data.userName}
+                onChange={handleChange}
                 className="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
                 placeholder="John Doe"
               />
@@ -50,6 +84,7 @@ export default function Register() {
                 type="email"
                 name="email"
                 value={data.email}
+                onChange={handleChange}
                 className="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
                 placeholder="you@example.com"
               />
@@ -64,6 +99,7 @@ export default function Register() {
                 type="password"
                 name="password"
                 value={data.password}
+                onChange={handleChange}
                 className="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
                 placeholder="••••••••"
               />
@@ -80,6 +116,7 @@ export default function Register() {
                 type="password"
                 name="confirmPassword"
                 value={data.confirmPassword}
+                onChange={handleChange}
                 className="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
                 placeholder="••••••••"
               />
@@ -87,7 +124,7 @@ export default function Register() {
           </div>
 
           <button className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition font-medium">
-            Create Account
+            {loading ? "Creating...." : "Create Account"}
           </button>
         </form>
 
