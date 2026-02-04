@@ -33,7 +33,7 @@ export default function Register() {
     }
     try { 
       SetLoading(true);
-      const response = await Axios.post 
+      const response = await Axios.post
 
 
       
@@ -123,7 +123,9 @@ export default function Register() {
             </div>
           </div>
 
-          <button className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition font-medium">
+          <button 
+          className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition font-medium"
+          onClick={handleUserSignup}>
             {loading ? "Creating...." : "Create Account"}
           </button>
         </form>
