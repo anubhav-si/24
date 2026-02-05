@@ -1,11 +1,12 @@
-import { Axios } from "axios";
+import axios from "axios";
 import { Mail, Lock, User } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
   const [data,setData] = useState({
-    userName: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -23,22 +24,48 @@ export default function Register() {
     e.preventDefault();
     seterror("");
     
-   const {userName,email,password,confirmPassword} = data;
+   const {username,email,password,confirmPassword} = data;
       
-    if (!userName || !email || !password || !confirmPassword) {
+    if (!username || !email || !password || !confirmPassword) {
           return seterror("please provide all information");      
     }
+   
     if(password != confirmPassword){
       return seterror("Passwords do not match");
     }
     try { 
       SetLoading(true);
-      const response = await Axios.post
+      const response = await axios.post("http://localhost:3001/signup",
+        {
+        username,
+        email,
+        password,
+
+        },
+        {
+          headers:{
+            "content-Type":"application/json",
+          }
+        }
+      );
+      
+      if(response.data?.status === "ok"){
+        navigate("/login");
+
+      }
+      
+      
 
 
       
     } catch (error) {
-      seterror(error.message);
+      //  console.log("Backend error:", error.response?.data);
+      
+      seterror(
+        error.response?.data.message ||  "something went wrong "
+      );
+      // console.log(error);
+      
     }finally{
       SetLoading(false);
     }
@@ -60,15 +87,15 @@ export default function Register() {
         </div>
 
         {/* Form */}
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleUserSignup}>
           <div>
             <label className="text-sm text-gray-600">Full Name</label>
             <div className="relative mt-1">
               <User className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                name="userName"
-                value={data.userName}
+                name="username"
+                value={data.username}
                 onChange={handleChange}
                 className="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
                 placeholder="John Doe"
@@ -122,10 +149,17 @@ export default function Register() {
               />
             </div>
           </div>
-
+            {error && (
+                <p className="text-red-500 text-sm text-center">
+                  {error}
+                </p>
+              )}
           <button 
-          className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition font-medium"
-          onClick={handleUserSignup}>
+          type="submit"
+          disabled={loading}
+          className={`w-full bg-black text-white py-3 rounded-xl transition font-medium
+          ${loading ? "opacity-60 cursor-not-allowed" : "hover:bg-gray-800"}`}
+          >
             {loading ? "Creating...." : "Create Account"}
           </button>
         </form>
