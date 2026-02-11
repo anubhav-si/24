@@ -1,11 +1,14 @@
 import { Star, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useState,useEffect} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addProductToCart } from "../reduxstore/cartSlice";
 
 export default function ProductDetails() {
   const [qty, setQty] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+ 
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,7 +16,13 @@ export default function ProductDetails() {
   const products = useSelector((state) => state.product.productList);
   const cartItems = useSelector((state) => state.cart.cartitem);
 
-  const product = products.find((item) => item._id === id);
+  const product = products?.find((item) => item._id === id);
+
+  useEffect(() => {
+    if (product?.images?.length) {
+      setSelectedImage(product.images[0].url);
+    }
+  }, [product]);
 
   // ✅ check if product already in cart
   const isInCart = cartItems.some(
@@ -39,14 +48,39 @@ export default function ProductDetails() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10">
       
-      {/* Image */}
-      <div className="bg-gray-100 rounded-xl p-6 flex items-center justify-center">
-        <img
-          src={product.images[0].url}
-          alt={product.name}
-          className="rounded-lg max-h-[400px] object-contain"
-        />
+      {/* Image Gallery */}
+      <div className="flex flex-col-reverse md:flex-row gap-4">
+        
+        {/* Thumbnails */}
+        <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-visible">
+          {product.images.map((img, index) => (
+            <button
+              key={index}
+              onClick={() => setSelectedImage(img.url)}
+              className={`border rounded-lg p-1 transition 
+                ${selectedImage === img.url ? "border-black" : "border-gray-200"}`}
+            >
+              <img
+                src={img.url}
+                alt="thumb"
+                className="w-20 h-20 object-cover rounded-md"
+              />
+            </button>
+          ))}
+        </div>
+
+        {/* Main Image */}
+        <div className="flex-1 bg-gray-100 rounded-2xl p-6 flex items-center justify-center overflow-hidden group">
+          <img
+            src={selectedImage}
+            alt={product.name}
+            className="rounded-xl max-h-[500px] object-contain 
+                      transition-transform duration-300 
+                      group-hover:scale-105"
+          />
+        </div>
       </div>
+
 
       {/* Details */}
       <div>
